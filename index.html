@@ -75,7 +75,7 @@ g+=`<rect x="${L}" y="${Y(mx)}" width="${w-L-R}" height="${Y(zone.hi)-Y(mx)}" fi
 g+=`<rect x="${L}" y="${Y(zone.ohi)}" width="${w-L-R}" height="${Y(zone.olo)-Y(zone.ohi)}" fill="#43a047" opacity=".16"/>`;
 for(let i=0;i<23;i++){const a=arr[i],b=arr[i+1];const bad=(a<zone.lo||a>zone.hi)&&(b<zone.lo||b>zone.hi);if(bad)extra+=`<line x1="${X(i).toFixed(1)}" y1="${Y(a).toFixed(1)}" x2="${X(i+1).toFixed(1)}" y2="${Y(b).toFixed(1)}" stroke="#d32f2f" stroke-width="4"/>`}
 }for(let k=0;k<=2;k++){const v=mn+(mx-mn)*k/2,y=Y(v);g+=`<line x1="${L}" x2="${w-R}" y1="${y}" y2="${y}" stroke="currentColor" opacity=".15"/><text x="${L-4}" y="${y+4}" font-size="10" text-anchor="end" fill="currentColor" opacity=".7">${v.toFixed(unit==="kPa"?1:0)}</text>`}
-for(let i=0;i<24;i+=6)g+=`<text x="${X(i)}" y="${h-6}" font-size="10" text-anchor="middle" fill="currentColor" opacity=".7">${i}:00</text>`;
+for(let i=0;i<24;i++){const big=i%3===0;g+=`<line x1="${X(i)}" x2="${X(i)}" y1="${T}" y2="${h-B}" stroke="currentColor" opacity="${big?.15:.06}"/>`;if(big)g+=`<text x="${X(i)}" y="${h-6}" font-size="10" text-anchor="middle" fill="currentColor" opacity=".7">${i}時</text>`}
 return `<div style="margin-bottom:10px"><b style="font-size:13px">${title}（${unit}）</b><svg viewBox="0 0 ${w} ${h}">${g}<polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2.5"/>${extra}</svg>${zone?`<small>🟥 赤い部分は生育に適さない範囲（${zone.lo} kPa未満・${zone.hi} kPa超）／🟩 緑は適正範囲（${zone.olo}〜${zone.ohi} kPa）</small>`:""}</div>`}
 function render(data,fromCache,time){
 last=[data,fromCache,time];const d=data,crop=CROPS[cropId]||CROPS.gen,s=score(d,crop),[y,m,dd]=d.date.split("-").map(Number),wd=W[new Date(y,m-1,dd).getDay()];
